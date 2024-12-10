@@ -1,4 +1,3 @@
----
 _schema-version: 3.3.0
 ID: espm
 version: 1.0.0
@@ -25,4 +24,20 @@ modules:
       - name: srv-api # required by consumers of CAP services (e.g. approuter)
         properties:
           srv-url: ${default-url}
-    requires: []
+    requires:
+      - name: espm-db
+
+  - name: espm-db-deployer
+    type: hdb
+    path: gen/db
+    parameters:
+      buildpack: nodejs_buildpack
+    requires:
+      - name: espm-db
+
+resources:
+  - name: espm-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared
